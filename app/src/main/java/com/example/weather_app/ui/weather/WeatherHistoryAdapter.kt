@@ -10,6 +10,7 @@ import com.example.weather_app.R
 import com.example.weather_app.databinding.ItemWeatherHistoryBinding
 import com.example.weather_app.domain.model.WeatherEntry
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -54,8 +55,18 @@ class WeatherHistoryAdapter :
         val formatter = SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault())
         holder.binding.tvDateTime.text = formatter.format(date)
 
+        val isClearSky = item.icon == "01d"
+        val calendar = Calendar.getInstance().apply { time = date }
+        val hourOfDay = calendar.get(Calendar.HOUR_OF_DAY)
+
+        val finalIconCode = if (isClearSky) {
+            if (hourOfDay >= 18 || hourOfDay < 6) "01n" else "01d"
+        } else {
+            item.icon
+        }
+
         Glide.with(holder.itemView.context)
-            .load("https://openweathermap.org/img/wn/${item.icon}@2x.png")
+            .load("https://openweathermap.org/img/wn/$finalIconCode@2x.png")
             .placeholder(R.drawable.ic_broken_img)
             .into(holder.binding.imgWeatherIcon)
     }
