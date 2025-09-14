@@ -29,13 +29,15 @@ class CurrentWeatherFragment : Fragment(R.layout.fragment_current_weather) {
     private var errorDialog: AlertDialog? = null
     private var locationPermissionDialog: AlertDialog? = null
     private var locationSettingsDialog: AlertDialog? = null
+    private var permissionDenied = false
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
+                permissionDenied = false
                 fetchWeatherForCurrentLocation()
             } else {
-                showPermissionDeniedDialog()
+                permissionDenied = true
             }
         }
 
@@ -55,12 +57,9 @@ class CurrentWeatherFragment : Fragment(R.layout.fragment_current_weather) {
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
-    private fun fetchLocation() {
-        showLoading(true)
-        fetchWeatherForCurrentLocation()
-    }
 
     private fun fetchWeatherForCurrentLocation() {
+        showLoading(true)
 
         if (!LocationUtils.isLocationEnabled(requireContext())) {
             showEnableLocationDialog()
@@ -175,7 +174,7 @@ class CurrentWeatherFragment : Fragment(R.layout.fragment_current_weather) {
             .setPositiveButton(getString(R.string.retry)) { dialog, _ ->
                 dialog.dismiss()
                 errorDialog = null
-                fetchLocation()
+                fetchWeatherForCurrentLocation()
             }
             .show()
     }
@@ -194,22 +193,18 @@ class CurrentWeatherFragment : Fragment(R.layout.fragment_current_weather) {
     override fun onResume() {
         super.onResume()
 
-        if (!isResumed || !isVisible) return
-
-        if (binding.progressBar.isVisible) {
-            fetchLocation()
-        }
-
         when {
-            LocationUtils.hasLocationPermission(requireContext()) -> {
-                locationPermissionDialog?.takeIf { it.isShowing }?.let {
-                    it.dismiss()
-                    locationPermissionDialog = null
-                    fetchLocation()
+            LocationUtils.hasLocationPermission(requireContext()) && binding.progressBar.isVisible -> {
+                fetchWeatherForCurrentLocation()
+            }
+            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
+                showPermissionDeniedDialog()
+            }
+            else -> {
+                if (permissionDenied) {
+                    requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                 }
             }
-            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> showPermissionDeniedDialog()
-            else -> requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
 }
