@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Weather_app" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color: Sky Blue -->
+        <item name="colorPrimary">@color/dark_primary</item>
+        <item name="colorPrimaryVariant">@color/dark_background</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary / accents -->
+        <item name="colorSecondary">@color/sun_yellow</item>
+        <item name="colorSecondaryVariant">@color/sun_yellow</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- Status bar and nav bar -->
+        <!--<item name="android:statusBarColor">?attr/colorPrimaryVariant</item>-->
+        <item name="android:statusBarColor">@color/dark_primary</item>
+        <item name="android:navigationBarColor">@color/dark_primary</item>
+    </style>
+</resources>

@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">GWeather</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+
+    <string name="city_country">%1$s, %2$s</string>
+    <string name="temperature">%1$.1f°C</string>
+    <string name="sunrise">Sunrise: %1$s</string>
+    <string name="sunset">Sunset: %1$s</string>
+
+    <string name="location_permission_title">Location Permission Required</string>
+    <string name="location_permission_message">This app needs location access to fetch the current weather. Please enable it in settings.</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="error_title">Error</string>
+    <string name="error_message">Something went wrong. Please try again.</string>
+    <string name="retry">Retry</string>
+    <string name="location_unavailable">Unable to get your location</string>
+    <string name="enable_location_title">Enable Location</string>
+    <string name="enable_location_message">Location is disabled. Please enable it to use this feature.</string>
+
+    <string name="tab_current_weather">Current Weather</string>
+    <string name="tab_weather_history">Weather History</string>
+
+</resources>
